@@ -97,51 +97,205 @@ const faqs = [
   { q: 'Pomažete li pri otvaranju obrta ili d.o.o.-a?', a: 'Naravno. Savjetujemo koji oblik poslovanja vam najviše odgovara i vodimo vas kroz cijeli postupak.' },
 ]
 
+// TODO: replace the placeholder names, roles and descriptions below with real ones.
+// Add a photo by putting an image in /public and setting `photo: '/ime-datoteke.jpg'`.
+const owner = {
+  name: 'Marko Ević',
+  role: 'Vlasnik',
+  initials: 'ME',
+  photo: null,
+  bio: [
+    'Ovdje upišite kratku priču o Marku Eviću: obrazovanje, godine iskustva i način rada.',
+    'Dodajte i što klijenti mogu očekivati: osobni pristup, jasne informacije i rješenja prilagođena njihovom poslovanju.',
+  ],
+  quote: 'Vaši brojevi su u dobrim rukama.',
+}
+
+const FOUNDED = 1992
+
+// TODO: add more milestones (new services, moves, awards) to the timeline as needed.
+const timeline = [
+  { when: String(FOUNDED), title: 'Osnivanje', text: 'Borislav Ević osniva Eva-Prom.' },
+  { when: 'Danas', title: 'Eva-Prom danas', text: 'Eva-Prom vodi Marko Ević, uz tim stručnjaka za knjigovodstvo, plaće i poreze.' },
+]
+
+const team = [
+  { name: 'Ivana Ević', role: 'Knjigovodstvo', initials: 'IE', color: 'sun', photo: null, text: 'Kratki opis zaduženja i iskustva ove osobe.' },
+  { name: 'Ime Prezime', role: 'Obračun plaća', initials: 'IP', color: 'sky', photo: null, text: 'Kratki opis zaduženja i iskustva ove osobe.' },
+  { name: 'Ime Prezime', role: 'Porezi i savjetovanje', initials: 'IP', color: 'coral', photo: null, text: 'Kratki opis zaduženja i iskustva ove osobe.' },
+]
+
+const values = [
+  { title: 'Točnost', text: 'Svaki račun i svaka prijava provjereni su prije nego što ih predamo.' },
+  { title: 'Jasnoća', text: 'Objašnjavamo jednostavnim jezikom, bez stručnog žargona.' },
+  { title: 'Osobni pristup', text: 'Poznajemo svakog klijenta i njegovo poslovanje po imenu.' },
+]
+
 const navLinks = [
   ['#usluge', 'Usluge'],
   ['#za-koga', 'Za koga'],
   ['#zasto', 'Zašto mi'],
   ['#kako', 'Kako radimo'],
+  ['#/upoznajte-nas', 'Upoznajte nas'],
   ['#kontakt', 'Kontakt'],
 ]
 
+const ABOUT_HASH = '#/upoznajte-nas'
+const getRoute = () => (window.location.hash === ABOUT_HASH ? 'about' : 'home')
+
 const year = new Date().getFullYear()
 
-const NAV_H = 68
-const SCROLL_PER_CARD = 55
+function Avatar({ person, color = 'green', large = false }) {
+  return (
+    <span className={`avatar ${color}${large ? ' large' : ''}`}>
+      {person.photo ? <img src={person.photo} alt={person.name} /> : <span aria-hidden="true">{person.initials}</span>}
+    </span>
+  )
+}
+
+function AboutPage() {
+  return (
+    <>
+      <section className="about-hero">
+        <div className="container">
+          <p className="pill">Upoznajte nas</p>
+          <h1>Ljudi iza vaših brojki</h1>
+          <p className="lead">
+            Mali, posvećeni tim koji brine da vaše knjigovodstvo bude točno, uredno i bez stresa.
+          </p>
+        </div>
+      </section>
+
+      <section className="section">
+        <div className="container owner fade">
+          <Avatar person={owner} large />
+          <div>
+            <p className="owner-role">{owner.role}</p>
+            <h2 className="left">{owner.name}</h2>
+            {owner.bio.map((p) => (
+              <p key={p} className="owner-bio">{p}</p>
+            ))}
+            <blockquote className="owner-quote">“{owner.quote}”</blockquote>
+          </div>
+        </div>
+      </section>
+
+      <section className="section soft">
+        <div className="container history">
+          <div className="history-year fade">
+            <span>{FOUNDED}</span>
+            <small>godina osnutka</small>
+          </div>
+          <div className="fade">
+            <h2 className="left">Naša priča</h2>
+            <p className="owner-bio">
+              Eva-Prom je {FOUNDED}. godine osnovan od strane Borislava Evića. Od tada, već {year - FOUNDED} godina,
+              brinemo o knjigama, plaćama i porezima obrta i tvrtki, jasno, točno i na vrijeme.
+            </p>
+            <ol className="timeline">
+              {timeline.map((t) => (
+                <li key={t.when}>
+                  <span className="timeline-when">{t.when}</span>
+                  <div>
+                    <h3>{t.title}</h3>
+                    <p>{t.text}</p>
+                  </div>
+                </li>
+              ))}
+            </ol>
+          </div>
+        </div>
+      </section>
+
+      <section className="section">
+        <div className="container">
+          <h2>Naš tim</h2>
+          <p className="section-lead">Svatko od nas zna svoj posao, a zajedno pokrivamo sve što vam treba.</p>
+          <ul className="grid team">
+            {team.map((m, i) => (
+              <li key={`${m.role}-${i}`} className="card member fade">
+                <Avatar person={m} color={m.color} />
+                <h3>{m.name}</h3>
+                <p className="member-role">{m.role}</p>
+                <p>{m.text}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      <section className="section soft">
+        <div className="container">
+          <h2>Što nas pokreće</h2>
+          <p className="section-lead">Tri stvari kojih se držimo u svakom poslu.</p>
+          <ul className="values">
+            {values.map((v, i) => (
+              <li key={v.title} className="fade">
+                <span className="step-n">{i + 1}</span>
+                <h3>{v.title}</h3>
+                <p>{v.text}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      <section className="cta-band">
+        <div className="container cta-inner">
+          <h2>Želite nas upoznati?</h2>
+          <a href="#kontakt" className="btn btn-light">Javite nam se</a>
+        </div>
+      </section>
+    </>
+  )
+}
 
 function App() {
   const [status, setStatus] = useState('idle')
   const [menuOpen, setMenuOpen] = useState(false)
   const [active, setActive] = useState(0)
-  const stackRef = useRef(null)
+  const [route, setRoute] = useState(getRoute)
+  const dragStart = useRef(null)
+  const homeTitle = useRef(document.title)
 
   useEffect(() => {
-    const el = stackRef.current
-    const stage = el.firstElementChild
-    const last = services.length - 1
-
-    function onScroll() {
-      const range = el.offsetHeight - stage.offsetHeight
-      if (range <= 0) return
-      const p = Math.min(1, Math.max(0, (NAV_H - el.getBoundingClientRect().top) / range))
-      setActive(Math.min(last, Math.floor(p * services.length)))
-    }
-
-    onScroll()
-    window.addEventListener('scroll', onScroll, { passive: true })
-    window.addEventListener('resize', onScroll)
-    return () => {
-      window.removeEventListener('scroll', onScroll)
-      window.removeEventListener('resize', onScroll)
-    }
+    const onHashChange = () => setRoute(getRoute())
+    window.addEventListener('hashchange', onHashChange)
+    return () => window.removeEventListener('hashchange', onHashChange)
   }, [])
 
+  useEffect(() => {
+    document.title = route === 'about' ? 'Upoznajte nas – Eva-Prom' : homeTitle.current
+    if (route === 'about') {
+      window.scrollTo(0, 0)
+      return
+    }
+    const { hash } = window.location
+    if (hash.length > 1) document.querySelector(hash)?.scrollIntoView()
+  }, [route])
+
   function goToCard(i) {
-    const el = stackRef.current
-    const range = el.offsetHeight - el.firstElementChild.offsetHeight
-    const top = el.getBoundingClientRect().top + window.scrollY - NAV_H
-    window.scrollTo({ top: top + ((i + 0.5) / services.length) * range, behavior: 'smooth' })
+    setActive(Math.min(services.length - 1, Math.max(0, i)))
+  }
+
+  function onStackPointerDown(e) {
+    dragStart.current = e.clientX
+  }
+
+  function onStackPointerUp(e) {
+    if (dragStart.current === null) return
+    const dx = e.clientX - dragStart.current
+    dragStart.current = null
+    if (dx < -40) goToCard(active + 1)
+    else if (dx > 40) goToCard(active - 1)
+    else if (Math.abs(dx) < 6) goToCard(active + 1)
+  }
+
+  function onStackKeyDown(e) {
+    if (e.key === 'ArrowRight') goToCard(active + 1)
+    else if (e.key === 'ArrowLeft') goToCard(active - 1)
+    else return
+    e.preventDefault()
   }
 
   useEffect(() => {
@@ -206,7 +360,7 @@ function App() {
           </a>
           <nav className="nav-links" aria-label="Glavni izbornik">
             {navLinks.map(([href, label]) => (
-              <a key={href} href={href}>{label}</a>
+              <a key={href} href={href} aria-current={href === ABOUT_HASH && route === 'about' ? 'page' : undefined}>{label}</a>
             ))}
           </nav>
           <div className="nav-right">
@@ -231,7 +385,11 @@ function App() {
         </div>
       </header>
 
-      <main id="top">
+      <main id="upoznajte-nas" hidden={route !== 'about'}>
+        <AboutPage />
+      </main>
+
+      <main id="top" hidden={route !== 'home'}>
         <section className="hero">
           <div className="container hero-inner">
             <div className="hero-text">
@@ -263,18 +421,21 @@ function App() {
           </div>
         </section>
 
-        <section
-          id="usluge"
-          ref={stackRef}
-          className="section stack-section"
-          style={{ height: `calc(100vh - ${NAV_H}px + ${(services.length - 1) * SCROLL_PER_CARD}vh)` }}
-        >
+        <section id="usluge" className="section stack-section">
           <div className="stack-stage">
             <div className="container">
               <h2>Naše usluge</h2>
               <p className="section-lead">Sve što vašem poslovanju treba na jednom mjestu.</p>
             </div>
-            <ul className="stack">
+            <ul
+              className="stack"
+              tabIndex={0}
+              aria-label="Naše usluge"
+              onPointerDown={onStackPointerDown}
+              onPointerUp={onStackPointerUp}
+              onPointerCancel={() => { dragStart.current = null }}
+              onKeyDown={onStackKeyDown}
+            >
               {services.map((s, i) => {
                 const o = i - active
                 return (
